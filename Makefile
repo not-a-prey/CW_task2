@@ -1,19 +1,22 @@
 CC=g++
-CFLAGS=-c
+CFLAGS=-c -Wall
+DEPS = calculator.h
+TARGET = calcmake
+LIB = calclib.a
 
-all: calcmake calclib.a
+all: $(TARGET) $(LIB)
 
-calcmake: main.o calclib.a
-	$(CC) main.o calclib.a -o calcmake
+$(TARGET): main.o $(LIB)
+	$(CC) main.o $(LIB) -o $(TARGET)
 
-main.o: main.cpp calculator.h
+main.o: main.cpp $(DEPS)
 	$(CC) $(CFLAGS) main.cpp
 
-calculator.o: calculator.cpp calculator.h
+calculator.o: calculator.cpp $(DEPS)
 	$(CC) $(CFLAGS) calculator.cpp
 
-calclib.a: calculator.o
-	ar -rcs calclib.a calculator.o
+$(LIB): calculator.o
+	ar -rcs $(LIB) calculator.o
 
 .PHONY: clean
 
